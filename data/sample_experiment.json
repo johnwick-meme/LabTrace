@@ -1,0 +1,11 @@
+{
+    "experiment_id": "ohm-001",
+    "name": "Ohm's Law Verification",
+    "readings": [
+        {"voltage": 2, "current": 0.02},
+        {"voltage": 4, "current": 0.04},
+        {"voltage": 6, "current": 0.06},
+        {"voltage": 8, "current": 0.04}
+    ],
+    "reference_file": "ohms-law.md"
+}
