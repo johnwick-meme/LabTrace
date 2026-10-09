@@ -189,17 +189,15 @@
       <section class="page" id="page-chat">
         <div class="page-heading"><div class="eyebrow">05 / AI ASSISTANT</div><h1>Chat AI</h1><p>Ask questions about Ohm’s law, lab readings, anomalies, and viva preparation.</p></div>
         <section class="panel chat-panel">
-          <div class="chat-heading"><div class="chat-avatar">✧</div><div><h3>LabTrace Assistant</h3><p>AI chat interface · backend connection pending</p></div><span class="badge">NOT CONNECTED</span></div>
+          <div class="chat-heading"><div class="chat-avatar">✧</div><div><h3>LabTrace Assistant</h3><p>Powered by local Gemma 3 via Ollama</p></div><span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981;">ONLINE</span></div>
           <div class="chat-messages" id="chat-messages" aria-live="polite">
-            <div class="chat-message assistant"><span class="chat-message-label">LABTRACE ASSISTANT</span><p>Hey! I’m the LabTrace chat assistant interface. Once the AI backend is connected, you’ll be able to ask me about your experiment, suspicious readings, and viva questions.</p></div>
-            <div class="chat-notice">Chat replies are not enabled yet. This page is the interface only; it will not pretend to generate AI answers until a real model is connected.</div>
+            <div class="chat-message assistant"><span class="chat-message-label">LABTRACE ASSISTANT</span><p>Hey! I’m connected to your local Gemma model. Ask me anything about Ohm’s law, your laboratory readings, or preparing for viva exams!</p></div>
           </div>
           <form class="chat-composer" id="chat-form">
             <label class="sr-only" for="chat-input">Message the LabTrace assistant</label>
-            <textarea id="chat-input" rows="2" placeholder="Ask about your experiment…" disabled></textarea>
-            <button class="btn btn-primary" type="submit" disabled>Send ↗</button>
+            <textarea id="chat-input" rows="2" placeholder="Ask about Ohm's law, unexpected readings, or viva questions..."></textarea>
+            <button class="btn btn-primary" type="submit" id="chat-submit-btn">Send ↗</button>
           </form>
-          <p class="muted">Next integration step: connect this page to the FastAPI chat endpoint and local Gemma through Ollama.</p>
         </section>
       </section>
 

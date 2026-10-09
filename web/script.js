@@ -877,6 +877,79 @@ $("#results-table").className = "empty-state";
 $("#results-table").textContent =
   "Run verification on the Experiment page to see results.";
 
-$("#hero-run").title = "Calculate and compare the current readings";
+// ---------- Chat AI Integration ----------
 
- 
+const chatForm = $("#chat-form");
+const chatInput = $("#chat-input");
+const chatMessages = $("#chat-messages");
+const chatSubmitBtn = $("#chat-submit-btn");
+
+function appendChatMessage(sender, text, isUser = false) {
+  const msgDiv = document.createElement("div");
+  msgDiv.className = `chat-message ${isUser ? "user" : "assistant"}`;
+  
+  const label = document.createElement("span");
+  label.className = "chat-message-label";
+  label.textContent = isUser ? "YOU" : "LABTRACE ASSISTANT";
+  msgDiv.appendChild(label);
+
+  const paragraph = document.createElement("p");
+  paragraph.textContent = text;
+  paragraph.style.whiteSpace = "pre-wrap";
+  msgDiv.appendChild(paragraph);
+
+  chatMessages.appendChild(msgDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  return paragraph;
+}
+
+if (chatForm && chatInput) {
+  chatForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const query = chatInput.value.trim();
+    if (!query) return;
+
+    appendChatMessage("user", query, true);
+    chatInput.value = "";
+    chatInput.disabled = true;
+    chatSubmitBtn.disabled = true;
+    chatSubmitBtn.textContent = "Thinking...";
+
+    const pendingP = appendChatMessage("assistant", "Thinking...");
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: query,
+          experiment_context: lastExperiment || { readings: sampleReadings }
+        }),
+      });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.detail || `Server returned ${response.status}`);
+      }
+
+      const data = await response.json();
+      pendingP.textContent = data.reply || "(No response received)";
+    } catch (err) {
+      pendingP.textContent = `Error connecting to AI: ${err.message}. Make sure Ollama is running!`;
+      pendingP.style.color = "#ef4444";
+    } finally {
+      chatInput.disabled = false;
+      chatSubmitBtn.disabled = false;
+      chatSubmitBtn.textContent = "Send ↗";
+      chatInput.focus();
+    }
+  });
+
+  // Allow sending with Enter (Shift+Enter for newline)
+  chatInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      chatForm.dispatchEvent(new Event("submit"));
+    }
+  });
+}
