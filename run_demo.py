@@ -24,10 +24,14 @@ def main():
     with open(sample_file, "r", encoding="utf-8") as f:
         experiment = json.load(f)
 
-    print(f"Loaded Experiment: {experiment['name']} (ID: {experiment['experiment_id']})")
+    title = experiment.get("name") or experiment.get("title", "Untitled Experiment")
+    readings = experiment.get("readings") or experiment.get("raw_readings", [])
+    print(f"Loaded Experiment: {title} (ID: {experiment['experiment_id']})")
     print("Readings:")
-    for i, r in enumerate(experiment["readings"], 1):
-        print(f"  Reading {i}: {r['voltage']} V, {r['current']} A")
+    for i, r in enumerate(readings, 1):
+        v = r.get("voltage", r.get("voltage_v"))
+        c = r.get("current", r.get("current_a"))
+        print(f"  Reading {i}: {v} V, {c} A")
 
     print("\nRunning AI Agent Investigation with local Gemma...")
     print("(Calculating resistances, detecting anomalies, loading references, querying model...)\n")

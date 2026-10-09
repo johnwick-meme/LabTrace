@@ -59,7 +59,12 @@ def calculate_resistance_tool(voltage, current):
 
     # --- Delegate to the deterministic function ---
     try:
-        resistance = calculate_resistance(voltage, current)
+        raw_res = calculate_resistance(voltage, current)
+        # Handle both float and dict return from calculate_resistance
+        if isinstance(raw_res, dict):
+            resistance = raw_res.get("resistance_ohm")
+        else:
+            resistance = raw_res
         result["success"] = True
         result["resistance"] = resistance
     except Exception as exc:
@@ -101,32 +106,71 @@ def compare_readings_tool(readings):
         return result
 
     # --- Validate each reading ---
+    normalized_readings = []
     for i, reading in enumerate(readings):
         if not isinstance(reading, dict):
             result["error"] = f"Reading {i} is not a dict: {reading!r}"
             return result
-        if "voltage" not in reading:
+        v = reading.get("voltage", reading.get("voltage_v"))
+        c = reading.get("current", reading.get("current_a"))
+        if v is None:
             result["error"] = f"Reading {i} is missing the 'voltage' field."
             return result
-        if "current" not in reading:
+        if c is None:
             result["error"] = f"Reading {i} is missing the 'current' field."
             return result
-        if not isinstance(reading["voltage"], (int, float)):
+        if not isinstance(v, (int, float)):
             result["error"] = (
                 f"Reading {i}: voltage must be a number, "
-                f"got {type(reading['voltage']).__name__}."
+                f"got {type(v).__name__}."
             )
             return result
-        if not isinstance(reading["current"], (int, float)):
+        if not isinstance(c, (int, float)):
             result["error"] = (
                 f"Reading {i}: current must be a number, "
-                f"got {type(reading['current']).__name__}."
+                f"got {type(c).__name__}."
             )
             return result
+        
+        norm_r = dict(reading)
+        norm_r["voltage"] = v
+        norm_r["voltage_v"] = v
+        norm_r["current"] = c
+        norm_r["current_a"] = c
+        norm_r["reading_id"] = reading.get("reading_id", f"R{i + 1}")
+        normalized_readings.append(norm_r)
 
     # --- Delegate to the deterministic function ---
     try:
-        comparison = compare_readings(readings)
+        comparison = compare_readings(normalized_readings)
+        
+        # Normalize comparison return if it's from Programmer 2's structure
+        if "reference_resistance_ohm" in comparison:
+            norm_anomalies = []
+            for idx, r_item in enumerate(comparison.get("readings", [])):
+                if r_item.get("anomaly"):
+                    calc_dict = r_item.get("calculation") or {}
+                    res_val = calc_dict.get("resistance_ohm")
+                    ref_val = comparison.get("reference_resistance_ohm")
+                    dev_pct = round((r_item.get("deviation_fraction") or 0) * 100, 1)
+                    norm_anomalies.append({
+                        "index": idx,
+                        "reading_id": r_item.get("reading_id"),
+                        "reading": normalized_readings[idx],
+                        "resistance": res_val,
+                        "expected": ref_val,
+                        "deviation_pct": dev_pct,
+                        "reason": f"Resistance ({res_val:.2f} Ω) deviates {dev_pct}% from median ({ref_val:.2f} Ω).",
+                    })
+            consistent_count = sum(1 for r_item in comparison.get("readings", []) if not r_item.get("anomaly") and r_item.get("valid"))
+            comparison = {
+                "resistances": [r_item.get("calculation", {}).get("resistance_ohm") if r_item.get("calculation") else None for r_item in comparison.get("readings", [])],
+                "median_resistance": comparison.get("reference_resistance_ohm"),
+                "anomalies": norm_anomalies,
+                "consistent_count": consistent_count,
+                "raw_result": comparison,
+            }
+
         result["success"] = True
         result["result"] = comparison
     except Exception as exc:
@@ -164,7 +208,11 @@ def save_experiment_tool(experiment):
         return result
 
     try:
-        exp_id = save_experiment(experiment)
+        raw_save = save_experiment(experiment)
+        if isinstance(raw_save, dict):
+            exp_id = raw_save.get("experiment_id")
+        else:
+            exp_id = raw_save
         result["success"] = True
         result["experiment_id"] = exp_id
     except Exception as exc:

@@ -1,0 +1,11 @@
+{
+  "experiment_id": "TEST001",
+  "raw_readings": [
+    {
+      "voltage_v": 2,
+      "current_a": 0.02
+    }
+  ],
+  "observations": [],
+  "updated_at": "2026-10-09T18:44:29.564776+00:00"
+}

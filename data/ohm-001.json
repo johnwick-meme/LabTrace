@@ -1,0 +1,72 @@
+{
+  "experiment_id": "ohm-001",
+  "name": "Ohm's Law Verification",
+  "readings": [
+    {
+      "voltage": 2,
+      "current": 0.02
+    },
+    {
+      "voltage": 4,
+      "current": 0.04
+    },
+    {
+      "voltage": 6,
+      "current": 0.06
+    },
+    {
+      "voltage": 8,
+      "current": 0.04
+    }
+  ],
+  "investigation_result": {
+    "calculations": [
+      {
+        "reading_index": 0,
+        "voltage": 2,
+        "current": 0.02,
+        "resistance": 100.0,
+        "error": null
+      },
+      {
+        "reading_index": 1,
+        "voltage": 4,
+        "current": 0.04,
+        "resistance": 100.0,
+        "error": null
+      },
+      {
+        "reading_index": 2,
+        "voltage": 6,
+        "current": 0.06,
+        "resistance": 100.0,
+        "error": null
+      },
+      {
+        "reading_index": 3,
+        "voltage": 8,
+        "current": 0.04,
+        "resistance": 200.0,
+        "error": null
+      }
+    ],
+    "anomalies": [
+      {
+        "index": 3,
+        "reading_id": "R4",
+        "reading": {
+          "voltage": 8,
+          "current": 0.04,
+          "voltage_v": 8,
+          "current_a": 0.04,
+          "reading_id": "R4"
+        },
+        "resistance": 200.0,
+        "expected": 100.0,
+        "deviation_pct": 100.0,
+        "reason": "Resistance (200.00 Ω) deviates 100.0% from median (100.00 Ω)."
+      }
+    ]
+  },
+  "updated_at": "2026-10-09T21:24:30.571750+00:00"
+}

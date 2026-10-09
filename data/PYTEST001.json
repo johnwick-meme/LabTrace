@@ -1,0 +1,13 @@
+{
+  "experiment_id": "PYTEST001",
+  "raw_readings": [
+    {
+      "voltage_v": 2,
+      "current_a": 0.02
+    }
+  ],
+  "observations": [
+    "Initial test"
+  ],
+  "updated_at": "2026-10-09T20:05:20.678774+00:00"
+}

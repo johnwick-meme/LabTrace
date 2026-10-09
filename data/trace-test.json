@@ -1,0 +1,23 @@
+{
+  "experiment_id": "trace-test",
+  "name": "Trace Test",
+  "readings": [
+    {
+      "voltage": 5,
+      "current": 0
+    }
+  ],
+  "investigation_result": {
+    "calculations": [
+      {
+        "reading_index": 0,
+        "voltage": 5,
+        "current": 0,
+        "resistance": null,
+        "error": "Current is zero — resistance cannot be calculated. This may indicate an open circuit or a faulty reading."
+      }
+    ],
+    "anomalies": []
+  },
+  "updated_at": "2026-10-09T21:24:30.569616+00:00"
+}

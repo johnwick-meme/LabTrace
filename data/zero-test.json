@@ -1,0 +1,34 @@
+{
+  "experiment_id": "zero-test",
+  "name": "Zero Current Test",
+  "readings": [
+    {
+      "voltage": 5,
+      "current": 0
+    },
+    {
+      "voltage": 10,
+      "current": 0.1
+    }
+  ],
+  "investigation_result": {
+    "calculations": [
+      {
+        "reading_index": 0,
+        "voltage": 5,
+        "current": 0,
+        "resistance": null,
+        "error": "Current is zero — resistance cannot be calculated. This may indicate an open circuit or a faulty reading."
+      },
+      {
+        "reading_index": 1,
+        "voltage": 10,
+        "current": 0.1,
+        "resistance": 100.0,
+        "error": null
+      }
+    ],
+    "anomalies": []
+  },
+  "updated_at": "2026-10-09T21:24:30.573701+00:00"
+}

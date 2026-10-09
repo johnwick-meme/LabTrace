@@ -1,0 +1,17 @@
+{
+  "experiment_id": "OHMS-TEST",
+  "title": "Test",
+  "raw_readings": [
+    {
+      "reading_id": "R1",
+      "voltage_v": 2.0,
+      "current_a": 0.02
+    }
+  ],
+  "observations": [
+    "Test ob"
+  ],
+  "source_passages": [],
+  "analysis_references": [],
+  "updated_at": "2026-10-09T20:13:27.683632+00:00"
+}

@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090d16">
+  <title>LabTrace — Laboratory Intelligence</title>
+  <link rel="stylesheet" href="/web/style.css">
+  <script src="/web/script.js" defer></script>Get-Content .\web\script.js
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#" aria-label="LabTrace home">
+      <span class="brand-icon">⌬</span>
+      <span><strong>LabTrace</strong><small>LAB INTELLIGENCE</small></span>
+    </a>
+
+    <div class="nav-label">WORKSPACE</div>
+    <nav class="navigation">
+      <button class="nav-link active" data-page="experiment"><span>⌘</span> Experiment</button>
+      <button class="nav-link" data-page="investigation"><span>⌕</span> Investigation</button>
+      <button class="nav-link" data-page="memory"><span>▤</span> Lab memory</button>
+      <button class="nav-link" data-page="viva"><span>✳</span> Viva practice</button>
+      <button class="nav-link" data-page="chat"><span>✧</span> Chat AI</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="system-indicator"><span class="pulse"></span> Local workspace</div>
+      <p>Preserve the data.<br>Investigate the evidence.</p>
+      <span class="version">LABTRACE · MVP 0.1</span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button id="mobile-menu" class="icon-btn" aria-label="Toggle navigation">☰</button>
+      <div class="breadcrumb">LabTrace <span>/</span> <strong id="breadcrumb">Experiment</strong></div>
+      <div class="top-actions">
+        <span class="connection"><i></i> Frontend demo</span>
+        <button id="theme-toggle" class="icon-btn" title="Toggle theme" aria-label="Toggle theme">☼</button>
+      </div>
+    </header>
+
+    <div class="page-wrap">
+      <section class="page active" id="page-experiment">
+        <div class="hero">
+          <div>
+            <div class="eyebrow"><span class="sparkle">✳</span> ENGINEERING WORKSPACE</div>
+            <h1>Good science starts<br>with <span>good evidence.</span></h1>
+            <p>Run your experiment, verify your measurements, and investigate what doesn't add up.</p>
+            <button class="btn btn-primary" id="hero-run">Run verification <span>↗</span></button>
+          </div>
+          <div class="hero-graphic" aria-hidden="true">
+            <div class="orb orb-one"></div><div class="orb orb-two"></div>
+            <div class="orb-core">Ω</div>
+            <div class="orbit-label label-top">VOLTAGE</div>
+            <div class="orbit-label label-bottom">CURRENT</div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-top"><span>Experiment</span><span class="stat-icon">⌘</span></div>
+            <strong id="stat-id">OHMS-001</strong>
+            <small>Current workspace</small>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Readings</span><span class="stat-icon">∿</span></div>
+            <strong id="stat-count">4</strong>
+            <small>Original measurements</small>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Flagged</span><span class="stat-icon warning-icon">!</span></div>
+            <strong id="stat-flags">—</strong>
+            <small id="stat-flag-note">Run verification first</small>
+          </article>
+        </div>
+
+        <div class="section-heading">
+          <div><div class="eyebrow">01 / INPUT</div><h2>Experiment setup</h2></div>
+          <span class="badge">Ohm's law</span>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel">
+            <div class="panel-heading">
+              <div><h3>Measurement table</h3><p>Enter the readings exactly as measured.</p></div>
+              <span class="tiny-label">RAW DATA</span>
+            </div>
+
+            <div class="form-grid">
+              <label>Experiment ID<input id="experiment-id" value="OHMS-001" maxlength="80"></label>
+              <label>Experiment name<input id="experiment-title" value="Ohm's Law Verification" maxlength="150"></label>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>ID</th><th>Voltage (V)</th><th>Current (A)</th><th></th></tr></thead>
+                <tbody id="reading-rows"></tbody>
+              </table>
+            </div>
+
+            <div class="table-actions">
+              <button class="btn btn-secondary btn-small" id="add-reading">＋ Add reading</button>
+              <button class="btn btn-quiet btn-small" id="reset-sample">↺ Load sample</button>
+            </div>
+
+            <div class="form-grid lower-form">
+              <label>Tolerance (%)<input id="tolerance" type="number" min="0" max="99.9" step="0.5" value="5"></label>
+              <label>Comparison method<input value="Median reference" disabled></label>
+            </div>
+
+            <label class="block-label">Observations<textarea id="observations" placeholder="What did you observe during the experiment?"></textarea></label>
+            <div class="button-row">
+              <button class="btn btn-primary" id="run-button">Calculate & compare ↗</button>
+              <button class="btn btn-secondary" id="save-button">Save experiment</button>
+            </div>
+            <p id="experiment-feedback" class="feedback" role="status" aria-live="polite"></p>
+          </section>
+
+          <div class="side-stack">
+            <section class="panel">
+              <div class="panel-heading"><div><h3>Experiment guide</h3><p>From measurements to evidence.</p></div></div>
+              <div class="steps">
+                <div class="step"><span>01</span><div><strong>Record</strong><small>Preserve original readings</small></div></div>
+                <div class="step"><span>02</span><div><strong>Calculate</strong><small>Apply Ohm's law</small></div></div>
+                <div class="step"><span>03</span><div><strong>Verify</strong><small>Compare resistance values</small></div></div>
+                <div class="step"><span>04</span><div><strong>Investigate</strong><small>Inspect evidence and anomalies</small></div></div>
+              </div>
+            </section>
+            <section class="panel integrity-panel">
+              <div class="integrity-symbol">◇</div>
+              <h3>Evidence integrity</h3>
+              <p>Unusual results are flagged, never silently corrected. A discrepancy alone doesn't prove its cause.</p>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-investigation">
+        <div class="page-heading"><div class="eyebrow">02 / ANALYSIS</div><h1>Investigation center</h1><p>Deterministic calculations and evidence from your experiment.</p></div>
+        <div class="stats-grid result-stats">
+          <article class="stat-card"><span>Reference resistance</span><strong id="result-reference">—</strong><small>Median of valid readings</small></article>
+          <article class="stat-card"><span>Valid readings</span><strong id="result-valid">—</strong><small>Successfully calculated</small></article>
+          <article class="stat-card"><span>Anomalies</span><strong id="result-anomalies">—</strong><small>Require investigation</small></article>
+        </div>
+        <section class="panel">
+          <div class="panel-heading"><div><h3>Resistance analysis</h3><p>Calculated results are kept separate from raw input.</p></div><span class="badge">DETERMINISTIC</span></div>
+          <div id="results-table" class="empty-state">Run verification on the Experiment page to see results.</div>
+        </section>
+        <div class="content-grid investigation-lower">
+          <section class="panel"><h3>Evidence & manual search</h3><p class="muted">Search the actual text supplied below. No passages are invented.</p>
+            <label class="block-label">Lab manual text<textarea id="manual-text" placeholder="Paste your real lab manual text here..."></textarea></label>
+            <label class="block-label">Search terms<input id="manual-query" value="Ohm's law"></label>
+            <button class="btn btn-secondary" id="search-manual">Search manual</button>
+            <div id="manual-results" class="manual-results"></div>
+          </section>
+          <section class="panel"><h3>AI investigation</h3><div class="ai-status"><span class="pulse"></span> Harness not connected</div><p class="muted">The final integration will call Programmer 1's real <code>run_investigation(experiment)</code> function and display its actual response.</p><div id="ai-results" class="ai-results">No AI findings received yet.</div></section>
+        </div>
+      </section>
+
+      <section class="page" id="page-memory">
+        <div class="page-heading"><div class="eyebrow">03 / PERSISTENCE</div><h1>Lab memory</h1><p>Save experiments locally in this browser, find previous work, and export your records.</p></div>
+        <section class="panel">
+          <div class="panel-heading"><div><h3>Saved experiments</h3><p>Browser-local demo storage, separate from Python JSON storage.</p></div><span class="badge" id="memory-count">0 records</span></div>
+          <div class="memory-toolbar"><input id="memory-search" placeholder="Search experiment ID or title..."><button id="export-all" class="btn btn-secondary">Export all JSON ↓</button><label class="btn btn-secondary import-label">Import JSON ↑<input id="import-file" type="file" accept=".json,application/json" hidden></label></div>
+          <div id="memory-list" class="memory-list"></div>
+        </section>
+        <p class="muted">These records are stored in this browser only. They do not automatically appear in your Python data folder or another device.</p>
+      </section>
+
+      <section class="page" id="page-viva">
+        <div class="page-heading"><div class="eyebrow">04 / LEARNING</div><h1>Viva practice</h1><p>Test your understanding of the experiment and reveal answers when you're ready.</p></div>
+        <div class="quiz-layout">
+          <section class="panel quiz-panel">
+            <div class="quiz-progress"><span id="quiz-counter">QUESTION 01 / 06</span><span id="quiz-score">Score: 0</span></div>
+            <div class="progress-track"><div id="quiz-progress-fill"></div></div>
+            <h2 id="quiz-question">What does Ohm's law state?</h2>
+            <div id="quiz-options" class="quiz-options"></div>
+            <p id="quiz-feedback" class="feedback" aria-live="polite"></p>
+            <div class="button-row"><button class="btn btn-secondary" id="quiz-restart">Restart quiz</button><button class="btn btn-primary" id="quiz-next" disabled>Next question →</button></div>
+          </section>
+          <aside class="panel quiz-tip"><div class="integrity-symbol">✳</div><h3>Lab tip</h3><p>Understand the principle, units, and limitations of the measurements. Don't assume an unusual reading reveals its cause.</p><div class="quiz-mini-stat"><span>Topic</span><strong>Electrical resistance</strong></div><div class="quiz-mini-stat"><span>Mode</span><strong>Practice</strong></div></aside>
+        </div>
+      </section>
+
+
+      <section class="page" id="page-chat">
+        <div class="page-heading"><div class="eyebrow">05 / AI ASSISTANT</div><h1>Chat AI</h1><p>Ask questions about Ohm’s law, lab readings, anomalies, and viva preparation.</p></div>
+        <section class="panel chat-panel">
+          <div class="chat-heading"><div class="chat-avatar">✧</div><div><h3>LabTrace Assistant</h3><p>AI chat interface · backend connection pending</p></div><span class="badge">NOT CONNECTED</span></div>
+          <div class="chat-messages" id="chat-messages" aria-live="polite">
+            <div class="chat-message assistant"><span class="chat-message-label">LABTRACE ASSISTANT</span><p>Hey! I’m the LabTrace chat assistant interface. Once the AI backend is connected, you’ll be able to ask me about your experiment, suspicious readings, and viva questions.</p></div>
+            <div class="chat-notice">Chat replies are not enabled yet. This page is the interface only; it will not pretend to generate AI answers until a real model is connected.</div>
+          </div>
+          <form class="chat-composer" id="chat-form">
+            <label class="sr-only" for="chat-input">Message the LabTrace assistant</label>
+            <textarea id="chat-input" rows="2" placeholder="Ask about your experiment…" disabled></textarea>
+            <button class="btn btn-primary" type="submit" disabled>Send ↗</button>
+          </form>
+          <p class="muted">Next integration step: connect this page to the FastAPI chat endpoint and local Gemma through Ollama.</p>
+        </section>
+      </section>
+
+      <footer>LabTrace <span>·</span> Open-source lab investigation <span>·</span> Local-first MVP</footer>
+    </div>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

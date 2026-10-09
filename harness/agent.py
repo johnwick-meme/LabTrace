@@ -287,7 +287,7 @@ def run_investigation(experiment):
         return result
     result["experiment_id"] = exp_id
 
-    readings = experiment.get("readings")
+    readings = experiment.get("readings") or experiment.get("raw_readings")
     if not isinstance(readings, list) or len(readings) == 0:
         result["errors"].append("experiment must have a non-empty 'readings' list.")
         result["trace"].append(_make_trace_entry(
@@ -342,8 +342,8 @@ def run_investigation(experiment):
     # -----------------------------------------------------------------------
     calc_results = []
     for i, reading in enumerate(readings):
-        v = reading.get("voltage")
-        c = reading.get("current")
+        v = reading.get("voltage", reading.get("voltage_v"))
+        c = reading.get("current", reading.get("current_a"))
         cr = calculate_resistance_tool(v, c)
         calc_results.append(cr)
 
@@ -358,7 +358,7 @@ def run_investigation(experiment):
     result["trace"].append(_make_trace_entry(
         "calculate_resistances",
         detail=f"Calculated resistance for {len(readings)} readings.",
-        inputs=[{"voltage": r.get("voltage"), "current": r.get("current")}
+        inputs=[{"voltage": r.get("voltage", r.get("voltage_v")), "current": r.get("current", r.get("current_a"))}
                 for r in readings],
         outputs=[{"resistance": cr.get("resistance"), "error": cr.get("error")}
                  for cr in calc_results],
